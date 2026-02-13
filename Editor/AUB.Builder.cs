@@ -107,7 +107,7 @@ namespace AUB
                 var duration = (float)(DateTime.UtcNow - startTime).TotalSeconds;
 
                 // 7. Process result
-                if (report.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+                if (report.summary.result == BuildResult.Succeeded)
                 {
                     Debug.Log($"[AUB] Build succeeded in {duration:F1}s");
                     Debug.Log($"[AUB] Output: {outputPath}");
@@ -115,9 +115,9 @@ namespace AUB
                     Debug.Log($"[AUB] Warnings: {report.summary.totalWarnings}, Errors: {report.summary.totalErrors}");
 
                     // Calculate actual output size on disk
-                    var diskSize = AUB.BuildResult.CalculateDirSize(outputPath);
+                    var diskSize = BuildResultReport.CalculateDirSize(outputPath);
 
-                    var result = AUB.BuildResult.Success(
+                    var result = BuildResultReport.Success(
                         config.BuildTarget,
                         outputPath,
                         diskSize > 0 ? diskSize : (long)report.summary.totalSize,
@@ -158,7 +158,7 @@ namespace AUB
                         }
                     }
 
-                    var failResult = AUB.BuildResult.Failure(config.BuildTarget, errorMsg, duration);
+                    var failResult = BuildResultReport.Failure(config.BuildTarget, errorMsg, duration);
                     failResult.warnings = report.summary.totalWarnings;
                     failResult.errors = report.summary.totalErrors;
                     failResult.scenes = scenes;
@@ -189,7 +189,7 @@ namespace AUB
         private static void WriteFailureAndExit(BuildConfig config, string error, DateTime startTime)
         {
             var duration = (float)(DateTime.UtcNow - startTime).TotalSeconds;
-            var result = AUB.BuildResult.Failure(config?.BuildTarget ?? "unknown", error, duration);
+            var result = BuildResultReport.Failure(config?.BuildTarget ?? "unknown", error, duration);
 
             var outputDir = config?.OutputDir;
             if (!string.IsNullOrEmpty(outputDir))

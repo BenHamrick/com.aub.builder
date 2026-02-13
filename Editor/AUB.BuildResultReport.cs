@@ -9,7 +9,7 @@ namespace AUB
     /// The runner reads this file after Unity exits to get detailed build info.
     /// </summary>
     [Serializable]
-    public class BuildResult
+    public class BuildResultReport
     {
         public bool success;
         public string target;
@@ -42,7 +42,7 @@ namespace AUB
         /// <summary>
         /// Create a success result.
         /// </summary>
-        public static BuildResult Success(
+        public static BuildResultReport Success(
             string target,
             string outputPath,
             long totalSize,
@@ -51,7 +51,7 @@ namespace AUB
             int errors,
             string[] scenes)
         {
-            return new BuildResult
+            return new BuildResultReport
             {
                 success = true,
                 target = target,
@@ -69,9 +69,9 @@ namespace AUB
         /// <summary>
         /// Create a failure result.
         /// </summary>
-        public static BuildResult Failure(string target, string errorMessage, float duration)
+        public static BuildResultReport Failure(string target, string errorMessage, float duration)
         {
-            return new BuildResult
+            return new BuildResultReport
             {
                 success = false,
                 target = target,
