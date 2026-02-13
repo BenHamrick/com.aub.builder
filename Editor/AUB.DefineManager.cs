@@ -15,6 +15,9 @@ namespace AUB
     {
         private static string _savedDefines;
         private static BuildTargetGroup _savedGroup;
+#if UNITY_2023_1_OR_NEWER
+        private static UnityEditor.Build.NamedBuildTarget SavedNamedTarget => UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(_savedGroup);
+#endif
 
         /// <summary>
         /// Inject additional scripting defines for the build.
@@ -30,7 +33,8 @@ namespace AUB
             // Save current state for restoration
             _savedGroup = group;
 #if UNITY_2023_1_OR_NEWER
-            PlayerSettings.GetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(group), out _savedDefines);
+            PlayerSettings.GetScriptingDefineSymbols(SavedNamedTarget, out string[] savedArr);
+            _savedDefines = string.Join(";", savedArr);
 #else
             _savedDefines = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
 #endif
@@ -45,7 +49,7 @@ namespace AUB
             var result = string.Join(";", merged);
 
 #if UNITY_2023_1_OR_NEWER
-            PlayerSettings.SetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(group), result);
+            PlayerSettings.SetScriptingDefineSymbols(SavedNamedTarget, merged.ToArray());
 #else
             PlayerSettings.SetScriptingDefineSymbolsForGroup(group, result);
 #endif
@@ -64,7 +68,7 @@ namespace AUB
                 return;
 
 #if UNITY_2023_1_OR_NEWER
-            PlayerSettings.SetScriptingDefineSymbols(UnityEditor.Build.NamedBuildTarget.FromBuildTargetGroup(_savedGroup), _savedDefines);
+            PlayerSettings.SetScriptingDefineSymbols(SavedNamedTarget, _savedDefines.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries));
 #else
             PlayerSettings.SetScriptingDefineSymbolsForGroup(_savedGroup, _savedDefines);
 #endif
