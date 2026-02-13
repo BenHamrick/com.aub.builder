@@ -29,9 +29,6 @@ namespace AUB
             { "windows", BuildTarget.StandaloneWindows64 },
             { "linux", BuildTarget.StandaloneLinux64 },
             { "macos", BuildTarget.StandaloneOSX },
-            { "webgl", BuildTarget.WebGL },
-            { "android", BuildTarget.Android },
-            { "ios", BuildTarget.iOS },
         };
 
         /// <summary>
