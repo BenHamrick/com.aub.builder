@@ -1,0 +1,20 @@
+{
+  "name": "com.aub.builder",
+  "version": "0.1.0",
+  "displayName": "AUB Builder",
+  "description": "Automatic Unity Builds - Editor build automation package. Provides structured build execution, version stamping, and build result reporting for AUB runners.",
+  "unity": "2020.3",
+  "keywords": [
+    "build",
+    "ci",
+    "automation",
+    "pipeline"
+  ],
+  "author": {
+    "name": "AUB",
+    "url": "https://automaticunitybuilds.com"
+  },
+  "type": "tool",
+  "documentationUrl": "https://automaticunitybuilds.com/docs/unity-package",
+  "license": "MIT"
+}
