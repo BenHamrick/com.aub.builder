@@ -107,7 +107,7 @@ namespace AUB
                 var duration = (float)(DateTime.UtcNow - startTime).TotalSeconds;
 
                 // 7. Process result
-                if (report.summary.result == BuildResult.Succeeded)
+                if (report.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
                 {
                     Debug.Log($"[AUB] Build succeeded in {duration:F1}s");
                     Debug.Log($"[AUB] Output: {outputPath}");
