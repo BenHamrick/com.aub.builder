@@ -53,8 +53,14 @@ namespace AUB
             }
 
             // 4. Switch build target if needed
-            PlatformHelper.SwitchBuildTarget(buildTarget);
+            bool didSwitch = PlatformHelper.SwitchBuildTarget(buildTarget);
             var targetGroup = PlatformHelper.GetTargetGroup(buildTarget);
+
+            // Wait for Unity to settle after platform switch (recompilation, asset reimport)
+            if (didSwitch)
+            {
+                UnitySettleGate.WaitForUnityToSettle($"after SwitchBuildTarget -> {buildTarget}");
+            }
 
             // 5. Inject scripting defines
             DefineManager.InjectDefines(targetGroup, config.Defines);
@@ -84,6 +90,10 @@ namespace AUB
                 }
 
                 Debug.Log($"[AUB] Building {scenes.Length} scene(s) for {buildTarget} -> {outputPath}");
+
+                // Safety net: wait for Unity to settle before building
+                // (define injection or other steps may have triggered recompilation)
+                UnitySettleGate.WaitForUnityToSettle("pre-BuildPlayer");
 
                 var buildOptions = BuildOptions.None;
 #if UNITY_2021_2_OR_NEWER
