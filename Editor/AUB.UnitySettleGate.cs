@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using UnityEditor;
-using UnityEditor.Compilation;
+
 using Debug = UnityEngine.Debug;
 
 namespace AUB
@@ -32,16 +32,15 @@ namespace AUB
             while (true)
             {
                 bool compiling = EditorApplication.isCompiling;
-                bool pipelineCompiling = CompilationPipeline.isCompiling;
                 bool updating = EditorApplication.isUpdating;
 
-                if (!compiling && !pipelineCompiling && !updating)
+                if (!compiling && !updating)
                     break;
 
                 if (sw.Elapsed.TotalSeconds - lastLogTime >= 5.0)
                 {
                     Debug.Log($"[AUB] Waiting for Unity to settle ({context}): " +
-                              $"isCompiling={compiling}, pipelineCompiling={pipelineCompiling}, " +
+                              $"isCompiling={compiling}, " +
                               $"isUpdating={updating} [{sw.Elapsed.TotalSeconds:F1}s elapsed]");
                     lastLogTime = sw.Elapsed.TotalSeconds;
                 }
@@ -50,7 +49,7 @@ namespace AUB
                 {
                     throw new TimeoutException(
                         $"[AUB] Unity did not settle within {timeoutSeconds}s ({context}). " +
-                        $"isCompiling={compiling}, pipelineCompiling={pipelineCompiling}, isUpdating={updating}");
+                        $"isCompiling={compiling}, isUpdating={updating}");
                 }
 
                 Thread.Sleep(200);
