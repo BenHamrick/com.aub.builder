@@ -21,7 +21,7 @@ namespace AUB
         /// </summary>
         /// <param name="context">Description of why we're waiting (for logs)</param>
         /// <param name="timeoutSeconds">Maximum seconds to wait before throwing</param>
-        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 600)
+        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 172800) // 48 hours
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
