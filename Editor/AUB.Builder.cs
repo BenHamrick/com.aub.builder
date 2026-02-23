@@ -46,6 +46,17 @@ namespace AUB
                 return;
             }
 
+            // 2b. Validate platform module is installed
+            var resolvedGroup = PlatformHelper.GetTargetGroup(buildTarget);
+            if (!BuildPipeline.IsBuildTargetSupported(resolvedGroup, buildTarget))
+            {
+                var msg = $"Build target '{config.BuildTarget}' ({buildTarget}) is not supported by this Unity installation. "
+                        + $"Please install the {resolvedGroup} platform module via Unity Hub.";
+                Debug.LogError($"[AUB] {msg}");
+                WriteFailureAndExit(config, msg, startTime);
+                return;
+            }
+
             // 3. Version stamp
             if (!string.IsNullOrEmpty(config.BuildId) || !string.IsNullOrEmpty(config.CommitHash))
             {

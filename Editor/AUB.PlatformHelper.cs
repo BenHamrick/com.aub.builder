@@ -22,6 +22,37 @@ namespace AUB
 #if UNITY_2021_2_OR_NEWER
             { "Switch", BuildTarget.Switch },
 #endif
+            // Xbox Series X|S (GameCore) — current gen
+            { "xbox", BuildTarget.GameCoreXboxSeries },
+            { "xboxseries", BuildTarget.GameCoreXboxSeries },
+            { "GameCoreXboxSeries", BuildTarget.GameCoreXboxSeries },
+            // Xbox One (GameCore) — Xbox One via modern GDK pipeline
+            { "xboxone", BuildTarget.GameCoreXboxOne },
+            { "GameCoreXboxOne", BuildTarget.GameCoreXboxOne },
+            // Xbox One (Legacy) — old Xbox One pipeline
+            { "xboxone-legacy", BuildTarget.XboxOne },
+            { "XboxOne", BuildTarget.XboxOne },
+            // PlayStation
+            { "ps4", BuildTarget.PS4 },
+            { "PS4", BuildTarget.PS4 },
+            { "ps5", BuildTarget.PS5 },
+            { "PS5", BuildTarget.PS5 },
+            // UWP / Windows Store
+            { "uwp", BuildTarget.WSAPlayer },
+            { "wsa", BuildTarget.WSAPlayer },
+            { "WSAPlayer", BuildTarget.WSAPlayer },
+            // tvOS
+            { "tvos", BuildTarget.tvOS },
+            { "tvOS", BuildTarget.tvOS },
+            // VisionOS (Apple Vision Pro)
+            { "visionos", BuildTarget.VisionOS },
+            { "VisionOS", BuildTarget.VisionOS },
+            // Embedded Linux
+            { "embeddedlinux", BuildTarget.EmbeddedLinux },
+            { "EmbeddedLinux", BuildTarget.EmbeddedLinux },
+            // QNX
+            { "qnx", BuildTarget.QNX },
+            { "QNX", BuildTarget.QNX },
             // Aliases for compatibility
             { "StandaloneWindows64", BuildTarget.StandaloneWindows64 },
             { "StandaloneLinux64", BuildTarget.StandaloneLinux64 },
@@ -61,6 +92,26 @@ namespace AUB
                 case BuildTarget.Switch:
                     return BuildTargetGroup.Switch;
 #endif
+                case BuildTarget.GameCoreXboxSeries:
+                    return BuildTargetGroup.GameCoreXboxSeries;
+                case BuildTarget.GameCoreXboxOne:
+                    return BuildTargetGroup.GameCoreXboxOne;
+                case BuildTarget.XboxOne:
+                    return BuildTargetGroup.XboxOne;
+                case BuildTarget.PS4:
+                    return BuildTargetGroup.PS4;
+                case BuildTarget.PS5:
+                    return BuildTargetGroup.PS5;
+                case BuildTarget.WSAPlayer:
+                    return BuildTargetGroup.WSA;
+                case BuildTarget.tvOS:
+                    return BuildTargetGroup.tvOS;
+                case BuildTarget.VisionOS:
+                    return BuildTargetGroup.VisionOS;
+                case BuildTarget.EmbeddedLinux:
+                    return BuildTargetGroup.EmbeddedLinux;
+                case BuildTarget.QNX:
+                    return BuildTargetGroup.QNX;
                 default:
                     return BuildTargetGroup.Unknown;
             }
@@ -86,6 +137,26 @@ namespace AUB
                     return "game.apk";
                 case BuildTarget.iOS:
                     return "ios-build";
+                case BuildTarget.GameCoreXboxSeries:
+                    return "xboxseries-build";
+                case BuildTarget.GameCoreXboxOne:
+                    return "xboxone-build";
+                case BuildTarget.XboxOne:
+                    return "xboxone-legacy-build";
+                case BuildTarget.PS4:
+                    return "ps4-build";
+                case BuildTarget.PS5:
+                    return "ps5-build";
+                case BuildTarget.WSAPlayer:
+                    return "uwp-build";
+                case BuildTarget.tvOS:
+                    return "tvos-build";
+                case BuildTarget.VisionOS:
+                    return "visionos-build";
+                case BuildTarget.EmbeddedLinux:
+                    return "embeddedlinux-build";
+                case BuildTarget.QNX:
+                    return "qnx-build";
                 default:
                     return "build";
             }
