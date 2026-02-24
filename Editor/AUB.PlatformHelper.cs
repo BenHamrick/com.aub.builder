@@ -31,28 +31,21 @@ namespace AUB
             { "GameCoreXboxOne", BuildTarget.GameCoreXboxOne },
             // Xbox One (Legacy) — old Xbox One pipeline
             { "xboxone-legacy", BuildTarget.XboxOne },
-            { "XboxOne", BuildTarget.XboxOne },
             // PlayStation
             { "ps4", BuildTarget.PS4 },
-            { "PS4", BuildTarget.PS4 },
             { "ps5", BuildTarget.PS5 },
-            { "PS5", BuildTarget.PS5 },
             // UWP / Windows Store
             { "uwp", BuildTarget.WSAPlayer },
             { "wsa", BuildTarget.WSAPlayer },
             { "WSAPlayer", BuildTarget.WSAPlayer },
             // tvOS
             { "tvos", BuildTarget.tvOS },
-            { "tvOS", BuildTarget.tvOS },
             // VisionOS (Apple Vision Pro)
             { "visionos", BuildTarget.VisionOS },
-            { "VisionOS", BuildTarget.VisionOS },
             // Embedded Linux
             { "embeddedlinux", BuildTarget.EmbeddedLinux },
-            { "EmbeddedLinux", BuildTarget.EmbeddedLinux },
             // QNX
             { "qnx", BuildTarget.QNX },
-            { "QNX", BuildTarget.QNX },
             // Aliases for compatibility
             { "StandaloneWindows64", BuildTarget.StandaloneWindows64 },
             { "StandaloneLinux64", BuildTarget.StandaloneLinux64 },
