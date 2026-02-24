@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Threading;
 using UnityEditor;
 
 using Debug = UnityEngine.Debug;
@@ -17,11 +16,12 @@ namespace AUB
     {
         /// <summary>
         /// Polls until Unity is no longer compiling or updating assets.
-        /// Safe to call in batchmode (uses Thread.Sleep, no coroutines).
+        /// Uses EditorApplication.Step() to tick the editor forward so that
+        /// compilation and asset imports can actually complete on the main thread.
         /// </summary>
         /// <param name="context">Description of why we're waiting (for logs)</param>
         /// <param name="timeoutSeconds">Maximum seconds to wait before throwing</param>
-        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 172800) // 48 hours
+        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 600)
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
@@ -31,6 +31,10 @@ namespace AUB
 
             while (true)
             {
+                // Tick the editor so Unity can process compilation, domain reload,
+                // and asset import callbacks that require the main thread.
+                EditorApplication.Step();
+
                 bool compiling = EditorApplication.isCompiling;
                 bool updating = EditorApplication.isUpdating;
 
@@ -51,8 +55,6 @@ namespace AUB
                         $"[AUB] Unity did not settle within {timeoutSeconds}s ({context}). " +
                         $"isCompiling={compiling}, isUpdating={updating}");
                 }
-
-                Thread.Sleep(200);
             }
 
             double waited = sw.Elapsed.TotalSeconds;
