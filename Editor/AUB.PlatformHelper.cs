@@ -23,17 +23,27 @@ namespace AUB
             { "Switch", BuildTarget.Switch },
 #endif
             // Xbox Series X|S (GameCore) — current gen
+#if UNITY_6000_0_OR_NEWER
             { "xbox", BuildTarget.GameCoreXboxSeries },
             { "xboxseries", BuildTarget.GameCoreXboxSeries },
             { "GameCoreXboxSeries", BuildTarget.GameCoreXboxSeries },
+#elif UNITY_2020_2_OR_NEWER
+            { "xbox", BuildTarget.GameCoreScarlett },
+            { "xboxseries", BuildTarget.GameCoreScarlett },
+            { "GameCoreScarlett", BuildTarget.GameCoreScarlett },
+#endif
             // Xbox One (GameCore) — Xbox One via modern GDK pipeline
+#if UNITY_2020_2_OR_NEWER
             { "xboxone", BuildTarget.GameCoreXboxOne },
             { "GameCoreXboxOne", BuildTarget.GameCoreXboxOne },
+#endif
             // Xbox One (Legacy) — old Xbox One pipeline
             { "xboxone-legacy", BuildTarget.XboxOne },
             // PlayStation
             { "ps4", BuildTarget.PS4 },
+#if UNITY_2020_2_OR_NEWER
             { "ps5", BuildTarget.PS5 },
+#endif
             // UWP / Windows Store
             { "uwp", BuildTarget.WSAPlayer },
             { "wsa", BuildTarget.WSAPlayer },
@@ -41,11 +51,17 @@ namespace AUB
             // tvOS
             { "tvos", BuildTarget.tvOS },
             // VisionOS (Apple Vision Pro)
+#if UNITY_6000_0_OR_NEWER
             { "visionos", BuildTarget.VisionOS },
+#endif
             // Embedded Linux
+#if UNITY_2021_2_OR_NEWER
             { "embeddedlinux", BuildTarget.EmbeddedLinux },
+#endif
             // QNX
+#if UNITY_6000_0_OR_NEWER
             { "qnx", BuildTarget.QNX },
+#endif
             // Aliases for compatibility
             { "StandaloneWindows64", BuildTarget.StandaloneWindows64 },
             { "StandaloneLinux64", BuildTarget.StandaloneLinux64 },
@@ -85,26 +101,41 @@ namespace AUB
                 case BuildTarget.Switch:
                     return BuildTargetGroup.Switch;
 #endif
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.GameCoreXboxSeries:
                     return BuildTargetGroup.GameCoreXboxSeries;
+#elif UNITY_2020_2_OR_NEWER
+                case BuildTarget.GameCoreScarlett:
+                    return BuildTargetGroup.GameCoreScarlett;
+#endif
+#if UNITY_2020_2_OR_NEWER
                 case BuildTarget.GameCoreXboxOne:
                     return BuildTargetGroup.GameCoreXboxOne;
+#endif
                 case BuildTarget.XboxOne:
                     return BuildTargetGroup.XboxOne;
                 case BuildTarget.PS4:
                     return BuildTargetGroup.PS4;
+#if UNITY_2020_2_OR_NEWER
                 case BuildTarget.PS5:
                     return BuildTargetGroup.PS5;
+#endif
                 case BuildTarget.WSAPlayer:
                     return BuildTargetGroup.WSA;
                 case BuildTarget.tvOS:
                     return BuildTargetGroup.tvOS;
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.VisionOS:
                     return BuildTargetGroup.VisionOS;
+#endif
+#if UNITY_2021_2_OR_NEWER
                 case BuildTarget.EmbeddedLinux:
                     return BuildTargetGroup.EmbeddedLinux;
+#endif
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.QNX:
                     return BuildTargetGroup.QNX;
+#endif
                 default:
                     return BuildTargetGroup.Unknown;
             }
@@ -130,26 +161,40 @@ namespace AUB
                     return "game.apk";
                 case BuildTarget.iOS:
                     return "ios-build";
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.GameCoreXboxSeries:
+#elif UNITY_2020_2_OR_NEWER
+                case BuildTarget.GameCoreScarlett:
+#endif
+#if UNITY_2020_2_OR_NEWER
                     return "xboxseries-build";
                 case BuildTarget.GameCoreXboxOne:
                     return "xboxone-build";
+#endif
                 case BuildTarget.XboxOne:
                     return "xboxone-legacy-build";
                 case BuildTarget.PS4:
                     return "ps4-build";
+#if UNITY_2020_2_OR_NEWER
                 case BuildTarget.PS5:
                     return "ps5-build";
+#endif
                 case BuildTarget.WSAPlayer:
                     return "uwp-build";
                 case BuildTarget.tvOS:
                     return "tvos-build";
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.VisionOS:
                     return "visionos-build";
+#endif
+#if UNITY_2021_2_OR_NEWER
                 case BuildTarget.EmbeddedLinux:
                     return "embeddedlinux-build";
+#endif
+#if UNITY_6000_0_OR_NEWER
                 case BuildTarget.QNX:
                     return "qnx-build";
+#endif
                 default:
                     return "build";
             }
