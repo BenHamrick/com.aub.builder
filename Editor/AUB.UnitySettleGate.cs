@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading;
 using UnityEditor;
 
 using Debug = UnityEngine.Debug;
@@ -10,31 +11,29 @@ namespace AUB
     /// Blocks until Unity has finished all compilation and asset importing.
     /// Used to prevent "script class layout is incompatible" errors that occur
     /// when BuildPipeline.BuildPlayer is invoked before the editor has settled
-    /// after a platform switch or define change.
+    /// after a define change or asset refresh.
     /// </summary>
     public static class UnitySettleGate
     {
         /// <summary>
         /// Polls until Unity is no longer compiling or updating assets.
-        /// Uses EditorApplication.Step() to tick the editor forward so that
-        /// compilation and asset imports can actually complete on the main thread.
         /// </summary>
         /// <param name="context">Description of why we're waiting (for logs)</param>
         /// <param name="timeoutSeconds">Maximum seconds to wait before throwing</param>
-        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 600)
+        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 120)
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
 
+            // Fast exit: if Unity is already idle after the synchronous refresh, no need to poll
+            if (!EditorApplication.isCompiling && !EditorApplication.isUpdating)
+                return;
+
             var sw = Stopwatch.StartNew();
-            var lastLogTime = -5.0; // force immediate first log if busy
+            var lastLogTime = -5.0; // force immediate first log
 
             while (true)
             {
-                // Tick the editor so Unity can process compilation, domain reload,
-                // and asset import callbacks that require the main thread.
-                EditorApplication.Step();
-
                 bool compiling = EditorApplication.isCompiling;
                 bool updating = EditorApplication.isUpdating;
 
@@ -55,6 +54,8 @@ namespace AUB
                         $"[AUB] Unity did not settle within {timeoutSeconds}s ({context}). " +
                         $"isCompiling={compiling}, isUpdating={updating}");
                 }
+
+                Thread.Sleep(200);
             }
 
             double waited = sw.Elapsed.TotalSeconds;

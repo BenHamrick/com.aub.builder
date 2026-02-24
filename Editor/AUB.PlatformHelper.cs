@@ -204,6 +204,7 @@ namespace AUB
         /// Switch the active build target if it differs from the current one.
         /// Returns true if a switch was needed (and performed).
         /// </summary>
+        [System.Obsolete("SwitchActiveBuildTarget is unsupported in batchmode. Pass -buildTarget on the Unity command line instead.")]
         public static bool SwitchBuildTarget(BuildTarget target)
         {
             if (EditorUserBuildSettings.activeBuildTarget == target)

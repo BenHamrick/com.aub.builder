@@ -63,14 +63,15 @@ namespace AUB
                 VersionStamper.Stamp(config, config.BuildTarget);
             }
 
-            // 4. Switch build target if needed
-            bool didSwitch = PlatformHelper.SwitchBuildTarget(buildTarget);
+            // 4. Verify build target matches (platform switch is handled via -buildTarget CLI arg)
             var targetGroup = PlatformHelper.GetTargetGroup(buildTarget);
-
-            // Wait for Unity to settle after platform switch (recompilation, asset reimport)
-            if (didSwitch)
+            if (EditorUserBuildSettings.activeBuildTarget != buildTarget)
             {
-                UnitySettleGate.WaitForUnityToSettle($"after SwitchBuildTarget -> {buildTarget}");
+                var msg = $"Active build target is {EditorUserBuildSettings.activeBuildTarget} but expected {buildTarget}. "
+                        + "Pass -buildTarget on the Unity command line to switch platforms in batchmode.";
+                Debug.LogError($"[AUB] {msg}");
+                WriteFailureAndExit(config, msg, startTime);
+                return;
             }
 
             // 5. Inject scripting defines
