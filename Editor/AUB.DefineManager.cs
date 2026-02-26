@@ -25,10 +25,11 @@ namespace AUB
         /// </summary>
         /// <param name="group">The build target group to modify</param>
         /// <param name="defines">Semicolon-separated defines to add (e.g. "STEAMWORKS_NET;DEBUG_MODE")</param>
-        public static void InjectDefines(BuildTargetGroup group, string defines)
+        /// <returns>True if defines were actually changed (recompilation triggered), false otherwise</returns>
+        public static bool InjectDefines(BuildTargetGroup group, string defines)
         {
             if (string.IsNullOrEmpty(defines))
-                return;
+                return false;
 
             // Save current state for restoration
             _savedGroup = group;
@@ -51,7 +52,7 @@ namespace AUB
             {
                 Debug.Log("[AUB] All requested defines already present — skipping SetScriptingDefineSymbols to avoid recompilation.");
                 _savedDefines = null; // nothing to restore
-                return;
+                return false;
             }
 
             var result = string.Join(";", merged);
@@ -63,6 +64,7 @@ namespace AUB
 #endif
 
             Debug.Log($"[AUB] Injected scripting defines: {string.Join(", ", added)}");
+            return true;
         }
 
         /// <summary>

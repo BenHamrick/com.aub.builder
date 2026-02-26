@@ -74,8 +74,8 @@ namespace AUB
                 return;
             }
 
-            // 5. Inject scripting defines
-            DefineManager.InjectDefines(targetGroup, config.Defines);
+            // 5. Inject scripting defines (returns true only if defines actually changed)
+            bool definesChanged = DefineManager.InjectDefines(targetGroup, config.Defines);
 
             try
             {
@@ -103,9 +103,13 @@ namespace AUB
 
                 Debug.Log($"[AUB] Building {scenes.Length} scene(s) for {buildTarget} -> {outputPath}");
 
-                // Safety net: wait for Unity to settle before building
-                // (define injection or other steps may have triggered recompilation)
-                UnitySettleGate.WaitForUnityToSettle("pre-BuildPlayer", 600);
+                // Only wait for Unity to settle if we actually changed scripting defines.
+                // In batchmode, Unity finishes all compilation before calling -executeMethod,
+                // so the settle gate is only needed when we trigger a new recompile.
+                if (definesChanged)
+                {
+                    UnitySettleGate.WaitForUnityToSettle("pre-BuildPlayer (defines changed)", 600);
+                }
 
                 var buildOptions = BuildOptions.None;
 #if UNITY_2021_2_OR_NEWER
