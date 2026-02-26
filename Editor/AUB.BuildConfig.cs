@@ -17,9 +17,6 @@ namespace AUB
         /// <summary>Whether this is a dedicated server build (subtarget)</summary>
         public bool ServerBuild { get; private set; }
 
-        /// <summary>Semicolon-separated scripting defines to inject</summary>
-        public string Defines { get; private set; }
-
         /// <summary>AUB build ID for version stamping</summary>
         public string BuildId { get; private set; }
 
@@ -49,7 +46,7 @@ namespace AUB
         /// <summary>
         /// Read build config from environment variables.
         /// Required: AUB_BUILD_TARGET, AUB_OUTPUT_DIR
-        /// Optional: AUB_SERVER_BUILD, AUB_DEFINES, AUB_BUILD_ID, AUB_COMMIT_HASH,
+        /// Optional: AUB_SERVER_BUILD, AUB_BUILD_ID, AUB_COMMIT_HASH,
         ///           AUB_BRANCH, AUB_BUILD_PROFILE, AUB_CODESIGN_IDENTITY, AUB_NOTARIZE_PROFILE
         /// </summary>
         public static BuildConfig FromEnvironment()
@@ -59,7 +56,6 @@ namespace AUB
             config.BuildTarget = GetEnv("AUB_BUILD_TARGET");
             config.OutputDir = GetEnv("AUB_OUTPUT_DIR");
             config.ServerBuild = GetEnv("AUB_SERVER_BUILD") == "true";
-            config.Defines = GetEnv("AUB_DEFINES") ?? "";
             config.BuildId = GetEnv("AUB_BUILD_ID") ?? "";
             config.CommitHash = GetEnv("AUB_COMMIT_HASH") ?? "";
             config.Branch = GetEnv("AUB_BRANCH") ?? "";
@@ -94,7 +90,7 @@ namespace AUB
         public override string ToString()
         {
             return $"BuildConfig(target={BuildTarget}, output={OutputDir}, server={ServerBuild}, " +
-                   $"defines={Defines}, buildId={BuildId}, commit={CommitHash})";
+                   $"buildId={BuildId}, commit={CommitHash})";
         }
     }
 }
