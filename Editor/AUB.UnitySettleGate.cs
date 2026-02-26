@@ -20,7 +20,7 @@ namespace AUB
         /// </summary>
         /// <param name="context">Description of why we're waiting (for logs)</param>
         /// <param name="timeoutSeconds">Maximum seconds to wait before throwing</param>
-        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 3600)
+        public static void WaitForUnityToSettle(string context, int timeoutSeconds = 600) // 10 minutes
         {
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
@@ -51,7 +51,7 @@ namespace AUB
                 if (sw.Elapsed.TotalSeconds > timeoutSeconds)
                 {
                     throw new TimeoutException(
-                        $"[AUB] Unity did not settle within {timeoutSeconds}s ({context}). " +
+                        $"[AUB] Settle gate timed out after {timeoutSeconds}s ({context}). " +
                         $"isCompiling={compiling}, isUpdating={updating}");
                 }
 

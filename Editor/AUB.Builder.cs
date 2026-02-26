@@ -105,7 +105,7 @@ namespace AUB
 
                 // Safety net: wait for Unity to settle before building
                 // (define injection or other steps may have triggered recompilation)
-                UnitySettleGate.WaitForUnityToSettle("pre-BuildPlayer");
+                UnitySettleGate.WaitForUnityToSettle("pre-BuildPlayer", 600);
 
                 var buildOptions = BuildOptions.None;
 #if UNITY_2021_2_OR_NEWER
