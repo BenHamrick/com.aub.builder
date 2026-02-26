@@ -46,6 +46,14 @@ namespace AUB
             foreach (var d in additional)
                 merged.Add(d.Trim());
 
+            var added = additional.Where(d => !existing.Contains(d.Trim())).ToArray();
+            if (added.Length == 0)
+            {
+                Debug.Log("[AUB] All requested defines already present — skipping SetScriptingDefineSymbols to avoid recompilation.");
+                _savedDefines = null; // nothing to restore
+                return;
+            }
+
             var result = string.Join(";", merged);
 
 #if UNITY_2023_1_OR_NEWER
@@ -54,9 +62,7 @@ namespace AUB
             PlayerSettings.SetScriptingDefineSymbolsForGroup(group, result);
 #endif
 
-            var added = additional.Where(d => !existing.Contains(d.Trim())).ToArray();
-            if (added.Length > 0)
-                Debug.Log($"[AUB] Injected scripting defines: {string.Join(", ", added)}");
+            Debug.Log($"[AUB] Injected scripting defines: {string.Join(", ", added)}");
         }
 
         /// <summary>
