@@ -35,6 +35,18 @@ namespace AUB
         /// <summary>macOS notarization keychain profile (optional)</summary>
         public string NotarizeProfile { get; private set; }
 
+        /// <summary>Path to Android keystore file (optional)</summary>
+        public string AndroidKeystorePath { get; private set; }
+
+        /// <summary>Android keystore password (optional)</summary>
+        public string AndroidKeystorePass { get; private set; }
+
+        /// <summary>Android key alias name (optional)</summary>
+        public string AndroidKeyAlias { get; private set; }
+
+        /// <summary>Android key alias password (optional)</summary>
+        public string AndroidKeyAliasPass { get; private set; }
+
         /// <summary>Whether the config was loaded successfully</summary>
         public bool IsValid { get; private set; }
 
@@ -62,6 +74,10 @@ namespace AUB
             config.BuildProfile = GetEnv("AUB_BUILD_PROFILE") ?? "";
             config.CodesignIdentity = GetEnv("AUB_CODESIGN_IDENTITY") ?? "";
             config.NotarizeProfile = GetEnv("AUB_NOTARIZE_PROFILE") ?? "";
+            config.AndroidKeystorePath = GetEnv("AUB_ANDROID_KEYSTORE_PATH") ?? "";
+            config.AndroidKeystorePass = GetEnv("AUB_ANDROID_KEYSTORE_PASS") ?? "";
+            config.AndroidKeyAlias = GetEnv("AUB_ANDROID_KEY_ALIAS") ?? "";
+            config.AndroidKeyAliasPass = GetEnv("AUB_ANDROID_KEY_ALIAS_PASS") ?? "";
 
             // Validate required fields
             if (string.IsNullOrEmpty(config.BuildTarget))

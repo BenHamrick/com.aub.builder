@@ -107,6 +107,32 @@ namespace AUB
             }
 #endif
 
+            // Android keystore signing (optional — set via AUB_ANDROID_KEYSTORE_* env vars)
+            if (buildTarget == UnityEditor.BuildTarget.Android && !string.IsNullOrEmpty(config.AndroidKeystorePath))
+            {
+                if (File.Exists(config.AndroidKeystorePath))
+                {
+                    PlayerSettings.Android.keystoreName = config.AndroidKeystorePath;
+                    Debug.Log($"[AUB] Android keystore set: {config.AndroidKeystorePath}");
+
+                    if (!string.IsNullOrEmpty(config.AndroidKeystorePass))
+                        PlayerSettings.Android.keystorePass = config.AndroidKeystorePass;
+
+                    if (!string.IsNullOrEmpty(config.AndroidKeyAlias))
+                    {
+                        PlayerSettings.Android.keyaliasName = config.AndroidKeyAlias;
+                        Debug.Log($"[AUB] Android key alias: {config.AndroidKeyAlias}");
+                    }
+
+                    if (!string.IsNullOrEmpty(config.AndroidKeyAliasPass))
+                        PlayerSettings.Android.keyaliasPass = config.AndroidKeyAliasPass;
+                }
+                else
+                {
+                    Debug.LogWarning($"[AUB] Android keystore file not found: {config.AndroidKeystorePath}");
+                }
+            }
+
             var buildPlayerOptions = new BuildPlayerOptions
             {
                 scenes = scenes,
