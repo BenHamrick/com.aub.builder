@@ -108,13 +108,29 @@ namespace AUB
 #endif
 
             // Android keystore signing (optional — set via AUB_ANDROID_KEYSTORE_* env vars)
-            if (buildTarget == UnityEditor.BuildTarget.Android && !string.IsNullOrEmpty(config.AndroidKeystorePath))
+            if (buildTarget == UnityEditor.BuildTarget.Android)
             {
-                if (File.Exists(config.AndroidKeystorePath))
-                {
-                    PlayerSettings.Android.keystoreName = config.AndroidKeystorePath;
-                    Debug.Log($"[AUB] Android keystore set: {config.AndroidKeystorePath}");
+                bool hasSigningConfig = !string.IsNullOrEmpty(config.AndroidKeystorePath)
+                    || !string.IsNullOrEmpty(config.AndroidKeystorePass)
+                    || !string.IsNullOrEmpty(config.AndroidKeyAlias);
 
+                if (hasSigningConfig)
+                {
+                    // Set keystore file path if provided (otherwise keep the project's existing keystore reference)
+                    if (!string.IsNullOrEmpty(config.AndroidKeystorePath))
+                    {
+                        if (File.Exists(config.AndroidKeystorePath))
+                        {
+                            PlayerSettings.Android.keystoreName = config.AndroidKeystorePath;
+                            Debug.Log($"[AUB] Android keystore set: {config.AndroidKeystorePath}");
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"[AUB] Android keystore file not found: {config.AndroidKeystorePath}");
+                        }
+                    }
+
+                    // Always inject passwords and alias when provided (keystore may already be in the repo)
                     if (!string.IsNullOrEmpty(config.AndroidKeystorePass))
                         PlayerSettings.Android.keystorePass = config.AndroidKeystorePass;
 
@@ -126,10 +142,8 @@ namespace AUB
 
                     if (!string.IsNullOrEmpty(config.AndroidKeyAliasPass))
                         PlayerSettings.Android.keyaliasPass = config.AndroidKeyAliasPass;
-                }
-                else
-                {
-                    Debug.LogWarning($"[AUB] Android keystore file not found: {config.AndroidKeystorePath}");
+
+                    Debug.Log("[AUB] Android signing credentials applied");
                 }
             }
 
